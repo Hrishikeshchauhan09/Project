@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hrishi Perfume</title>
+  <title>Aura Perfume</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Google Fonts for professional look -->
@@ -105,9 +105,13 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Shop</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="shop.html">Shop</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="#aboutModal" data-bs-toggle="modal" aria-label="About Aura Perfume">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contactModal" data-bs-toggle="modal" aria-label="Contact Aura Perfume">Contact</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -430,6 +434,68 @@
   </footer>
 
   <!-- Back to Top Button -->
+  <!-- About Modal -->
+  <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-warning">
+          <h5 class="modal-title" id="aboutLabel">About Aura Perfume</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h4 class="fw-bold" style="color:#e2c275;">Our Story</h4>
+          <p>Aura Perfume was founded with a passion for luxury and elegance. Our mission is to craft unforgettable scents that evoke emotion and sophistication. Each fragrance is meticulously blended using the finest ingredients, ensuring a unique and lasting impression.</p>
+          <h5 class="mt-4">Why Choose Aura?</h5>
+          <ul>
+            <li>Exquisite, long-lasting perfumes</li>
+            <li>Ethically sourced ingredients</li>
+            <li>Luxury packaging and presentation</li>
+            <li>Exceptional customer service</li>
+          </ul>
+          <div class="mt-3">
+            <span class="badge bg-warning text-dark me-2">Luxury</span>
+            <span class="badge bg-success me-2">Satisfaction Guaranteed</span>
+            <span class="badge bg-info text-dark">Free Shipping</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Modal -->
+  <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-info">
+          <h5 class="modal-title" id="contactLabel">Contact Aura Perfume</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="contactForm">
+            <div class="mb-3">
+              <label for="contactName" class="form-label">Name</label>
+              <input type="text" class="form-control" id="contactName" required>
+            </div>
+            <div class="mb-3">
+              <label for="contactEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="contactEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="contactMessage" class="form-label">Message</label>
+              <textarea class="form-control" id="contactMessage" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-warning w-100">Send Message</button>
+          </form>
+          <hr>
+          <div class="small">
+            <strong>Email:</strong> support@auraperfume.com<br>
+            <strong>Phone:</strong> +1 (800) 555-1234<br>
+            <strong>Address:</strong> 123 Luxury Ave, Scent City, USA
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <button type="button" id="backToTopBtn" class="btn btn-warning rounded-circle shadow position-fixed" style="bottom: 32px; right: 32px; display:none; z-index:1050; width:48px; height:48px;">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
       <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V4.707l3.147 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 4.707V11.5A.5.5 0 0 0 8 12z"/>
@@ -438,6 +504,12 @@
   <!-- Bootstrap JS Bundle (includes Popper) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    // Contact form logic
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for contacting Aura Perfume! We will get back to you soon.');
+      document.getElementById('contactForm').reset();
+    });
     document.getElementById('scentQuizForm').addEventListener('submit', function(e) {
       e.preventDefault();
       var mood = this.mood.value;

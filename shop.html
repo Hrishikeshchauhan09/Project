@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shop - Aura Perfume</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body { background: #f8f9fa; }
+    body {
+      background: linear-gradient(120deg, #f8f5e6 0%, #e2c275 100%);
+      /* fallback for older browsers */
+      background-color: #f8f5e6;
+    }
+    .shop-hero-title {
+      background: linear-gradient(90deg, #e2c275 0%, #bfa14a 60%, #fffbe6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: #bfa14a;
+      text-shadow: 0 4px 16px rgba(191,161,74,0.18), 0 2px 8px rgba(226,194,117,0.18);
+    }
+    .navbar-brand { font-family: 'Playfair Display', serif; font-weight: 700; letter-spacing: 2px; font-size: 2rem; color: #e2c275 !important; }
+    .navbar-brand:hover { color: #c9a34e !important; }
+    .product-card img { height: 200px; object-fit: cover; }
+    .product-card { transition: box-shadow 0.3s, transform 0.3s; }
+    .product-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(226,194,117,0.18); transform: translateY(-8px) scale(1.03); z-index: 2; }
+    .filter-bar { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); padding: 16px; margin-bottom: 24px; }
+    @media (max-width: 767px) {
+      .navbar-brand { font-size: 1.3rem; }
+      .product-card img { height: 140px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-0">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Aura Perfume</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="shop.html">Shop</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="#aboutModal" data-bs-toggle="modal" aria-label="About Aura Perfume">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contactModal" data-bs-toggle="modal" aria-label="Contact Aura Perfume">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link position-relative" href="#wishlistModal" data-bs-toggle="modal" aria-label="View Wishlist">
+              <i class="bi bi-heart" style="font-size:1.3rem;"></i>
+              <span id="wishlistCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link position-relative" href="#cartModal" data-bs-toggle="modal" aria-label="View Cart">
+              <i class="bi bi-cart3" style="font-size:1.3rem;"></i>
+              <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Offer Banner -->
+  <div class="alert alert-warning text-center mb-0 py-2" role="alert" style="border-radius:0; font-size:1.1rem; font-weight:500; letter-spacing:1px;">
+    <span class="me-2" aria-label="Limited Time Offer" role="img">⏳</span>
+    <strong>Free Shipping</strong> on orders over $50! Satisfaction Guaranteed.
+  </div>
+
+  <!-- Shop Hero -->
+  <section class="container py-5 text-center">
+    <h1 class="display-5 fw-bold mb-3 shop-hero-title" style="font-family:'Playfair Display',serif;">Shop Perfumes</h1>
+    <p class="lead">Browse our exclusive collection and find your perfect scent.</p>
+  </section>
+
+  <!-- Filter Bar (sticky) -->
+  <div class="container filter-bar mb-4">
+    <div class="row g-2 align-items-center">
+      <div class="col-12 col-md-3">
+        <select class="form-select" id="filterType">
+          <option value="all">All Types</option>
+          <option value="floral">Floral</option>
+          <option value="woody">Woody</option>
+          <option value="citrus">Citrus</option>
+          <option value="spicy">Spicy</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-3">
+        <select class="form-select" id="filterPrice">
+          <option value="all">All Prices</option>
+          <option value="low">Under $50</option>
+          <option value="mid">$50 - $100</option>
+          <option value="high">Over $100</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-3">
+        <select class="form-select" id="sortBy">
+          <option value="default">Sort By</option>
+          <option value="price">Price</option>
+          <option value="rating">Rating</option>
+          <option value="popularity">Popularity</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-3">
+        <input type="text" class="form-control" id="searchInput" placeholder="Search by name...">
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Grid -->
+  <section class="container pb-5">
+    <div class="row g-4" id="productGrid">
+      <!-- Example Product Card -->
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="card product-card shadow-sm h-100" data-type="floral" data-price="mid" data-name="Eternal Blossom" data-rating="4" data-popularity="5">
+          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Eternal Blossom">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="card-title">Eternal Blossom</h5>
+              <button class="btn btn-light btn-sm wishlist-btn" data-name="Eternal Blossom" aria-label="Add to Wishlist"><i class="bi bi-heart"></i></button>
+            </div>
+            <p class="card-text">A floral fragrance with notes of jasmine and rose.</p>
+            <div class="mb-2">
+              <span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+              <small class="text-muted">(4.0)</small>
+              <span class="ms-2 text-secondary small">123 reviews</span>
+              <span class="ms-2">
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Eternal Blossom" aria-label="Share on Facebook"><i class="bi bi-facebook"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Eternal Blossom" aria-label="Share on Twitter"><i class="bi bi-twitter"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Eternal Blossom" aria-label="Share on WhatsApp"><i class="bi bi-whatsapp"></i></button>
+              </span>
+            </div>
+            <!-- Scent Note Progress Bars -->
+            <div class="mb-3">
+              <div class="mb-1 small">Jasmine <span class="float-end">80%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Rose <span class="float-end">60%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-danger" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Citrus <span class="float-end">40%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+            <span class="badge bg-warning text-dark">Best Seller</span>
+            <span class="badge bg-success ms-1">Limited Edition</span>
+            <div class="mt-3 d-flex justify-content-between align-items-center">
+              <span class="fw-bold text-dark">$79</span>
+              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#quickViewModal1">Quick View</button>
+              <button class="btn btn-outline-success btn-sm add-to-cart" data-name="Eternal Blossom" data-price="79">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="card product-card shadow-sm h-100" data-type="woody" data-price="high" data-name="Mystic Oud" data-rating="5" data-popularity="4">
+          <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Mystic Oud">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="card-title">Mystic Oud</h5>
+              <button class="btn btn-light btn-sm wishlist-btn" data-name="Mystic Oud" aria-label="Add to Wishlist"><i class="bi bi-heart"></i></button>
+            </div>
+            <p class="card-text">A rich, woody scent with hints of spice.</p>
+            <div class="mb-2">
+              <span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              <small class="text-muted">(5.0)</small>
+              <span class="ms-2 text-secondary small">89 reviews</span>
+              <span class="ms-2">
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Mystic Oud" aria-label="Share on Facebook"><i class="bi bi-facebook"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Mystic Oud" aria-label="Share on Twitter"><i class="bi bi-twitter"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Mystic Oud" aria-label="Share on WhatsApp"><i class="bi bi-whatsapp"></i></button>
+              </span>
+            </div>
+            <!-- Scent Note Progress Bars -->
+            <div class="mb-3">
+              <div class="mb-1 small">Oud <span class="float-end">90%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-dark" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Spice <span class="float-end">70%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Amber <span class="float-end">50%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-secondary" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+            <span class="badge bg-success">New</span>
+            <div class="mt-3 d-flex justify-content-between align-items-center">
+              <span class="fw-bold text-dark">$129</span>
+              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#quickViewModal2">Quick View</button>
+              <button class="btn btn-outline-success btn-sm add-to-cart" data-name="Mystic Oud" data-price="129">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="card product-card shadow-sm h-100" data-type="citrus" data-price="low" data-name="Citrus Dream" data-rating="3" data-popularity="3">
+          <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Citrus Dream">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="card-title">Citrus Dream</h5>
+              <button class="btn btn-light btn-sm wishlist-btn" data-name="Citrus Dream" aria-label="Add to Wishlist"><i class="bi bi-heart"></i></button>
+            </div>
+  <!-- Wishlist Modal -->
+  <div class="modal fade" id="wishlistModal" tabindex="-1" aria-labelledby="wishlistLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="wishlistLabel">Your Wishlist</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <ul class="list-group mb-3" id="wishlistItems"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+            <p class="card-text">A refreshing blend of citrus and vanilla.</p>
+            <div class="mb-2">
+              <span class="text-warning">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+              <small class="text-muted">(3.0)</small>
+              <span class="ms-2 text-secondary small">42 reviews</span>
+              <span class="ms-2">
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Citrus Dream" aria-label="Share on Facebook"><i class="bi bi-facebook"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Citrus Dream" aria-label="Share on Twitter"><i class="bi bi-twitter"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Citrus Dream" aria-label="Share on WhatsApp"><i class="bi bi-whatsapp"></i></button>
+              </span>
+            </div>
+            <!-- Scent Note Progress Bars -->
+            <div class="mb-3">
+              <div class="mb-1 small">Citrus <span class="float-end">85%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Vanilla <span class="float-end">60%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Musk <span class="float-end">30%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-secondary" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+            <span class="badge bg-info text-dark">Popular</span>
+            <div class="mt-3 d-flex justify-content-between align-items-center">
+              <span class="fw-bold text-dark">$39</span>
+              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#quickViewModal3">Quick View</button>
+              <button class="btn btn-outline-success btn-sm add-to-cart" data-name="Citrus Dream" data-price="39">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Add more product cards as needed -->
+      <!-- New Product Card: Spicy Sensation -->
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="card product-card shadow-sm h-100" data-type="spicy" data-price="mid" data-name="Spicy Sensation" data-rating="4" data-popularity="4">
+          <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Spicy Sensation">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="card-title">Spicy Sensation</h5>
+              <button class="btn btn-light btn-sm wishlist-btn" data-name="Spicy Sensation" aria-label="Add to Wishlist"><i class="bi bi-heart"></i></button>
+            </div>
+            <p class="card-text">A bold blend of pepper, cinnamon, and cardamom for a fiery impression.</p>
+            <div class="mb-2">
+              <span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+              <small class="text-muted">(4.0)</small>
+              <span class="ms-2 text-secondary small">67 reviews</span>
+              <span class="ms-2">
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Spicy Sensation" aria-label="Share on Facebook"><i class="bi bi-facebook"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Spicy Sensation" aria-label="Share on Twitter"><i class="bi bi-twitter"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Spicy Sensation" aria-label="Share on WhatsApp"><i class="bi bi-whatsapp"></i></button>
+              </span>
+            </div>
+            <div class="mb-3">
+              <div class="mb-1 small">Pepper <span class="float-end">70%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-danger" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Cinnamon <span class="float-end">60%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Cardamom <span class="float-end">40%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+            <span class="badge bg-danger text-light">Spicy</span>
+            <div class="mt-3 d-flex justify-content-between align-items-center">
+              <span class="fw-bold text-dark">$69</span>
+              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#quickViewModal4">Quick View</button>
+              <button class="btn btn-outline-success btn-sm add-to-cart" data-name="Spicy Sensation" data-price="69">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Product Card: Oceanic Mist -->
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="card product-card shadow-sm h-100" data-type="aquatic" data-price="high" data-name="Oceanic Mist" data-rating="5" data-popularity="5">
+          <img src="https://images.unsplash.com/photo-1465101178521-c1a6f3b5b0c3?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Oceanic Mist">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="card-title">Oceanic Mist</h5>
+              <button class="btn btn-light btn-sm wishlist-btn" data-name="Oceanic Mist" aria-label="Add to Wishlist"><i class="bi bi-heart"></i></button>
+            </div>
+            <p class="card-text">A refreshing aquatic fragrance with sea breeze, salt, and driftwood notes.<br><br></p>
+            <div class="mb-2">
+              <span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              <small class="text-muted">(5.0)</small>
+              <span class="ms-2 text-secondary small">101 reviews</span>
+              <span class="ms-2">
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Oceanic Mist" aria-label="Share on Facebook"><i class="bi bi-facebook"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Oceanic Mist" aria-label="Share on Twitter"><i class="bi bi-twitter"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Oceanic Mist" aria-label="Share on WhatsApp"><i class="bi bi-whatsapp"></i></button>
+              </span>
+            </div>
+            <div class="mb-3">
+              <div class="mb-1 small">Sea Breeze <span class="float-end">80%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Salt <span class="float-end">60%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-primary" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Driftwood <span class="float-end">40%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-secondary" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+            <span class="badge bg-info text-dark">Aquatic</span>
+            <span class="badge bg-primary ms-1">Luxury</span>
+            <div class="mt-3 d-flex justify-content-between align-items-center">
+              <span class="fw-bold text-dark">$109</span>
+              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#quickViewModal5">Quick View</button>
+              <button class="btn btn-outline-success btn-sm add-to-cart" data-name="Oceanic Mist" data-price="109">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Product Card: Gourmand Velvet -->
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="card product-card shadow-sm h-100" data-type="gourmand" data-price="mid" data-name="Gourmand Velvet" data-rating="4" data-popularity="3">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Gourmand Velvet">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="card-title">Gourmand Velvet</h5>
+              <button class="btn btn-light btn-sm wishlist-btn" data-name="Gourmand Velvet" aria-label="Add to Wishlist"><i class="bi bi-heart"></i></button>
+            </div>
+            <p class="card-text">A delicious blend of vanilla, caramel, and almond for a sweet embrace.<br><br></p>
+            <div class="mb-2">
+              <span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+              <small class="text-muted">(4.0)</small>
+              <span class="ms-2 text-secondary small">54 reviews</span>
+              <span class="ms-2">
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Gourmand Velvet" aria-label="Share on Facebook"><i class="bi bi-facebook"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Gourmand Velvet" aria-label="Share on Twitter"><i class="bi bi-twitter"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Gourmand Velvet" aria-label="Share on WhatsApp"><i class="bi bi-whatsapp"></i></button>
+              </span>
+            </div>
+            <div class="mb-3">
+              <div class="mb-1 small">Vanilla <span class="float-end">75%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Caramel <span class="float-end">60%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-danger" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Almond <span class="float-end">40%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+            <span class="badge bg-warning text-dark">Gourmand</span>
+            <span class="badge bg-danger ms-1">Sweet</span>
+            <div class="mt-3 d-flex justify-content-between align-items-center">
+              <span class="fw-bold text-dark">$89</span>
+              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#quickViewModal6">Quick View</button>
+              <button class="btn btn-outline-success btn-sm add-to-cart" data-name="Gourmand Velvet" data-price="89">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Product Card: Green Harmony -->
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="card product-card shadow-sm h-100" data-type="green" data-price="low" data-name="Green Harmony" data-rating="3" data-popularity="2">
+          <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Green Harmony">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="card-title">Green Harmony</h5>
+              <button class="btn btn-light btn-sm wishlist-btn" data-name="Green Harmony" aria-label="Add to Wishlist"><i class="bi bi-heart"></i></button>
+            </div>
+            <p class="card-text">A fresh, leafy scent with notes of grass, mint, and vetiver.</p>
+            <div class="mb-2">
+              <span class="text-warning">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+              <small class="text-muted">(3.0)</small>
+              <span class="ms-2 text-secondary small">29 reviews</span>
+              <span class="ms-2">
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Green Harmony" aria-label="Share on Facebook"><i class="bi bi-facebook"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Green Harmony" aria-label="Share on Twitter"><i class="bi bi-twitter"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Green Harmony" aria-label="Share on WhatsApp"><i class="bi bi-whatsapp"></i></button>
+              </span>
+            </div>
+            <div class="mb-3">
+              <div class="mb-1 small">Grass <span class="float-end">60%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Mint <span class="float-end">50%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Vetiver <span class="float-end">30%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-secondary" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+            <span class="badge bg-success">Green</span>
+            <div class="mt-3 d-flex justify-content-between align-items-center">
+              <span class="fw-bold text-dark">$49</span>
+              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#quickViewModal7">Quick View</button>
+              <button class="btn btn-outline-success btn-sm add-to-cart" data-name="Green Harmony" data-price="49">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Product Card: Fruity Bliss -->
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="card product-card shadow-sm h-100" data-type="fruity" data-price="mid" data-name="Fruity Bliss" data-rating="4" data-popularity="4">
+          <img src="https://images.unsplash.com/photo-1465101178521-c1a6f3b5b0c3?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Fruity Bliss">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="card-title">Fruity Bliss</h5>
+              <button class="btn btn-light btn-sm wishlist-btn" data-name="Fruity Bliss" aria-label="Add to Wishlist"><i class="bi bi-heart"></i></button>
+            </div>
+            <p class="card-text">A vibrant mix of apple, peach, and berries for a playful touch.</p>
+            <div class="mb-2">
+              <span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+              <small class="text-muted">(4.0)</small>
+              <span class="ms-2 text-secondary small">73 reviews</span>
+              <span class="ms-2">
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Fruity Bliss" aria-label="Share on Facebook"><i class="bi bi-facebook"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Fruity Bliss" aria-label="Share on Twitter"><i class="bi bi-twitter"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Fruity Bliss" aria-label="Share on WhatsApp"><i class="bi bi-whatsapp"></i></button>
+              </span>
+            </div>
+            <div class="mb-3">
+              <div class="mb-1 small">Apple <span class="float-end">60%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Peach <span class="float-end">50%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Berries <span class="float-end">40%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-danger" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+            <span class="badge bg-info text-dark">Fruity</span>
+            <span class="badge bg-warning ms-1">Playful</span>
+            <div class="mt-3 d-flex justify-content-between align-items-center">
+              <span class="fw-bold text-dark">$79</span>
+              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#quickViewModal8">Quick View</button>
+              <button class="btn btn-outline-success btn-sm add-to-cart" data-name="Fruity Bliss" data-price="79">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Product Card: Powdery Muse -->
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="card product-card shadow-sm h-100" data-type="powdery" data-price="high" data-name="Powdery Muse" data-rating="5" data-popularity="5">
+          <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Powdery Muse">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="card-title">Powdery Muse</h5>
+              <button class="btn btn-light btn-sm wishlist-btn" data-name="Powdery Muse" aria-label="Add to Wishlist"><i class="bi bi-heart"></i></button>
+            </div>
+            <p class="card-text">A soft, elegant powdery scent with iris, musk, and vanilla.</p>
+            <div class="mb-2">
+              <span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              <small class="text-muted">(5.0)</small>
+              <span class="ms-2 text-secondary small">88 reviews</span>
+              <span class="ms-2">
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Powdery Muse" aria-label="Share on Facebook"><i class="bi bi-facebook"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Powdery Muse" aria-label="Share on Twitter"><i class="bi bi-twitter"></i></button>
+                <button class="btn btn-link btn-sm p-0 share-btn" data-name="Powdery Muse" aria-label="Share on WhatsApp"><i class="bi bi-whatsapp"></i></button>
+              </span>
+            </div>
+            <div class="mb-3">
+              <div class="mb-1 small">Iris <span class="float-end">70%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Musk <span class="float-end">60%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-secondary" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Vanilla <span class="float-end">40%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+            <span class="badge bg-secondary">Powdery</span>
+            <span class="badge bg-info ms-1">Elegant</span>
+            <div class="mt-3 d-flex justify-content-between align-items-center">
+              <span class="fw-bold text-dark">$119</span>
+              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#quickViewModal9">Quick View</button>
+              <button class="btn btn-outline-success btn-sm add-to-cart" data-name="Powdery Muse" data-price="119">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Pagination -->
+    <nav aria-label="Product pagination">
+      <ul class="pagination justify-content-center mt-4">
+        <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+      </ul>
+    </nav>
+  </section>
+
+  <!-- Quick View Modals -->
+  <div class="modal fade" id="quickViewModal1" tabindex="-1" aria-labelledby="quickViewLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-warning">
+          <h5 class="modal-title" id="quickViewLabel1">Eternal Blossom</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" class="img-fluid rounded mb-3" alt="Eternal Blossom">
+          <p>A floral fragrance with notes of jasmine and rose. Perfect for day and night. <br><strong>Price:</strong> $79</p>
+          <div class="mb-2">
+            <span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+            <small class="text-muted">(4.0)</small>
+            <span class="ms-2 text-secondary small">123 reviews</span>
+            <span class="ms-2">
+              <button class="btn btn-link btn-sm p-0 share-btn" data-name="Eternal Blossom" aria-label="Share on Facebook"><i class="bi bi-facebook"></i></button>
+              <button class="btn btn-link btn-sm p-0 share-btn" data-name="Eternal Blossom" aria-label="Share on Twitter"><i class="bi bi-twitter"></i></button>
+              <button class="btn btn-link btn-sm p-0 share-btn" data-name="Eternal Blossom" aria-label="Share on WhatsApp"><i class="bi bi-whatsapp"></i></button>
+            </span>
+          </div>
+          <button class="btn btn-outline-success w-100 add-to-cart" data-name="Eternal Blossom" data-price="79">Add to Cart</button>
+          <hr>
+          <form id="reviewForm1">
+            <div class="mb-2">
+              <label for="reviewText1" class="form-label">Leave a Review</label>
+              <textarea class="form-control" id="reviewText1" rows="2" required></textarea>
+            </div>
+            <div class="mb-2">
+              <label for="reviewRating1" class="form-label">Rating</label>
+              <select class="form-select" id="reviewRating1">
+                <option value="5">5</option>
+                <option value="4">4</option>
+                <option value="3">3</option>
+                <option value="2">2</option>
+                <option value="1">1</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Submit Review</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="quickViewModal2" tabindex="-1" aria-labelledby="quickViewLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-success">
+          <h5 class="modal-title" id="quickViewLabel2">Mystic Oud</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80" class="img-fluid rounded mb-3" alt="Mystic Oud">
+          <p>A rich, woody scent with hints of spice. Designed for a lasting impression. <br><strong>Price:</strong> $129</p>
+          <div class="mb-2">
+            <span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+            <small class="text-muted">(5.0)</small>
+            <span class="ms-2 text-secondary small">89 reviews</span>
+            <span class="ms-2">
+              <button class="btn btn-link btn-sm p-0 share-btn" data-name="Mystic Oud" aria-label="Share on Facebook"><i class="bi bi-facebook"></i></button>
+              <button class="btn btn-link btn-sm p-0 share-btn" data-name="Mystic Oud" aria-label="Share on Twitter"><i class="bi bi-twitter"></i></button>
+              <button class="btn btn-link btn-sm p-0 share-btn" data-name="Mystic Oud" aria-label="Share on WhatsApp"><i class="bi bi-whatsapp"></i></button>
+            </span>
+          </div>
+          <button class="btn btn-outline-success w-100 add-to-cart" data-name="Mystic Oud" data-price="129">Add to Cart</button>
+          <hr>
+          <form id="reviewForm2">
+            <div class="mb-2">
+              <label for="reviewText2" class="form-label">Leave a Review</label>
+              <textarea class="form-control" id="reviewText2" rows="2" required></textarea>
+            </div>
+            <div class="mb-2">
+              <label for="reviewRating2" class="form-label">Rating</label>
+              <select class="form-select" id="reviewRating2">
+                <option value="5">5</option>
+                <option value="4">4</option>
+                <option value="3">3</option>
+                <option value="2">2</option>
+                <option value="1">1</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Submit Review</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="quickViewModal3" tabindex="-1" aria-labelledby="quickViewLabel3" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-info">
+          <h5 class="modal-title" id="quickViewLabel3">Citrus Dream</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80" class="img-fluid rounded mb-3" alt="Citrus Dream">
+          <p>A refreshing blend of citrus and vanilla. Perfect for summer days. <br><strong>Price:</strong> $39</p>
+          <div class="mb-2">
+            <span class="text-warning">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+            <small class="text-muted">(3.0)</small>
+            <span class="ms-2 text-secondary small">42 reviews</span>
+            <span class="ms-2">
+              <button class="btn btn-link btn-sm p-0 share-btn" data-name="Citrus Dream" aria-label="Share on Facebook"><i class="bi bi-facebook"></i></button>
+              <button class="btn btn-link btn-sm p-0 share-btn" data-name="Citrus Dream" aria-label="Share on Twitter"><i class="bi bi-twitter"></i></button>
+              <button class="btn btn-link btn-sm p-0 share-btn" data-name="Citrus Dream" aria-label="Share on WhatsApp"><i class="bi bi-whatsapp"></i></button>
+            </span>
+          </div>
+          <button class="btn btn-outline-success w-100 add-to-cart" data-name="Citrus Dream" data-price="39">Add to Cart</button>
+          <hr>
+          <form id="reviewForm3">
+            <div class="mb-2">
+              <label for="reviewText3" class="form-label">Leave a Review</label>
+              <textarea class="form-control" id="reviewText3" rows="2" required></textarea>
+            </div>
+            <div class="mb-2">
+              <label for="reviewRating3" class="form-label">Rating</label>
+              <select class="form-select" id="reviewRating3">
+                <option value="5">5</option>
+                <option value="4">4</option>
+                <option value="3">3</option>
+                <option value="2">2</option>
+                <option value="1">1</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Submit Review</button>
+          </form>
+        </div>
+  <!-- Cart Modal -->
+  <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="cartLabel">Your Cart</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <ul class="list-group mb-3" id="cartItems"></ul>
+          <div class="fw-bold">Total: $<span id="cartTotal">0</span></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success">Checkout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Newsletter Signup -->
+  <!-- About Modal -->
+  <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-warning">
+          <h5 class="modal-title" id="aboutLabel">About Aura Perfume</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h4 class="fw-bold" style="color:#e2c275;">Our Story</h4>
+          <p>Aura Perfume was founded with a passion for luxury and elegance. Our mission is to craft unforgettable scents that evoke emotion and sophistication. Each fragrance is meticulously blended using the finest ingredients, ensuring a unique and lasting impression.</p>
+          <h5 class="mt-4">Why Choose Aura?</h5>
+          <ul>
+            <li>Exquisite, long-lasting perfumes</li>
+            <li>Ethically sourced ingredients</li>
+            <li>Luxury packaging and presentation</li>
+            <li>Exceptional customer service</li>
+          </ul>
+          <div class="mt-3">
+            <span class="badge bg-warning text-dark me-2">Luxury</span>
+            <span class="badge bg-success me-2">Satisfaction Guaranteed</span>
+            <span class="badge bg-info text-dark">Free Shipping</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Modal -->
+  <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-info">
+          <h5 class="modal-title" id="contactLabel">Contact Aura Perfume</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="contactForm">
+            <div class="mb-3">
+              <label for="contactName" class="form-label">Name</label>
+              <input type="text" class="form-control" id="contactName" required>
+            </div>
+            <div class="mb-3">
+              <label for="contactEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="contactEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="contactMessage" class="form-label">Message</label>
+              <textarea class="form-control" id="contactMessage" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-warning w-100">Send Message</button>
+          </form>
+          <hr>
+          <div class="small">
+            <strong>Email:</strong> support@auraperfume.com<br>
+            <strong>Phone:</strong> +1 (800) 555-1234<br>
+            <strong>Address:</strong> 123 Luxury Ave, Scent City, USA
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="container mb-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8">
+        <div class="card shadow-sm p-4">
+          <h5 class="mb-3">Subscribe to our Newsletter</h5>
+          <form id="newsletterForm">
+            <div class="input-group">
+              <input type="email" class="form-control" placeholder="Enter your email" required>
+              <button class="btn btn-warning" type="submit">Subscribe</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Footer -->
+  <footer class="footer mt-5">
+    <div class="container">
+      <p class="mb-1">&copy; 2025 Aura Perfume. All rights reserved.</p>
+    </div>
+  </footer>
+  <!-- Back to Top Button -->
+  <button type="button" class="btn btn-warning rounded-circle" id="backToTop" style="position:fixed;bottom:32px;right:32px;z-index:999;display:none;" aria-label="Back to Top">
+    <i class="bi bi-arrow-up"></i>
+  </button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <script>
+    // Back to Top button logic
+    var backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', function() {
+      backToTop.style.display = (window.scrollY > 300) ? 'block' : 'none';
+    });
+    backToTop.addEventListener('click', function() {
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+    // Newsletter form logic
+    document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for subscribing!');
+    });
+    // Review form logic
+    document.getElementById('reviewForm1').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for your review of Eternal Blossom!');
+    });
+    document.getElementById('reviewForm2').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for your review of Mystic Oud!');
+    });
+    document.getElementById('reviewForm3').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for your review of Citrus Dream!');
+    });
+    // Social sharing logic
+    document.querySelectorAll('.share-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var name = btn.getAttribute('data-name');
+        var url = window.location.href;
+        var text = encodeURIComponent('Check out this perfume: ' + name + ' at Aura Perfume!');
+        if (btn.ariaLabel.includes('Facebook')) {
+          window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank');
+        } else if (btn.ariaLabel.includes('Twitter')) {
+          window.open('https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent(url), '_blank');
+        } else if (btn.ariaLabel.includes('WhatsApp')) {
+          window.open('https://wa.me/?text=' + text + '%20' + encodeURIComponent(url), '_blank');
+        }
+      });
+    });
+    // Wishlist logic
+    var wishlist = [];
+    function updateWishlist() {
+      var wishlistItems = document.getElementById('wishlistItems');
+      wishlistItems.innerHTML = '';
+      wishlist.forEach(function(item) {
+        var li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+        li.textContent = item;
+        wishlistItems.appendChild(li);
+      });
+      document.getElementById('wishlistCount').textContent = wishlist.length;
+    }
+    document.querySelectorAll('.wishlist-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var name = btn.getAttribute('data-name');
+        var idx = wishlist.indexOf(name);
+        if (idx === -1) {
+          wishlist.push(name);
+          btn.classList.add('active');
+          btn.querySelector('i').classList.replace('bi-heart', 'bi-heart-fill');
+        } else {
+          wishlist.splice(idx, 1);
+          btn.classList.remove('active');
+          btn.querySelector('i').classList.replace('bi-heart-fill', 'bi-heart');
+        }
+        updateWishlist();
+      });
+    });
+    document.getElementById('wishlistModal').addEventListener('show.bs.modal', updateWishlist);
+    // Product filtering logic
+    function filterProducts() {
+      var type = document.getElementById('filterType').value;
+      var price = document.getElementById('filterPrice').value;
+      var search = document.getElementById('searchInput').value.toLowerCase();
+      document.querySelectorAll('#productGrid .product-card').forEach(function(card) {
+        var matchType = (type === 'all' || card.getAttribute('data-type') === type);
+        var matchPrice = (price === 'all' || card.getAttribute('data-price') === price);
+        var matchSearch = (search === '' || card.getAttribute('data-name').toLowerCase().includes(search));
+        card.parentElement.style.display = (matchType && matchPrice && matchSearch) ? '' : 'none';
+      });
+    }
+    // Sorting logic
+    function sortProducts() {
+      var sortBy = document.getElementById('sortBy').value;
+      var grid = document.getElementById('productGrid');
+      var cards = Array.from(grid.children);
+      if (sortBy === 'price') {
+        cards.sort(function(a, b) {
+          var pa = parseInt(a.querySelector('.fw-bold').textContent.replace('$',''));
+          var pb = parseInt(b.querySelector('.fw-bold').textContent.replace('$',''));
+          return pa - pb;
+        });
+      } else if (sortBy === 'rating') {
+        cards.sort(function(a, b) {
+          return b.getAttribute('data-rating') - a.getAttribute('data-rating');
+        });
+      } else if (sortBy === 'popularity') {
+        cards.sort(function(a, b) {
+          return b.getAttribute('data-popularity') - a.getAttribute('data-popularity');
+        });
+      }
+      cards.forEach(function(card) { grid.appendChild(card); });
+    }
+    document.getElementById('filterType').addEventListener('change', filterProducts);
+    document.getElementById('filterPrice').addEventListener('change', filterProducts);
+    document.getElementById('searchInput').addEventListener('input', filterProducts);
+    document.getElementById('sortBy').addEventListener('change', sortProducts);
+
+    // Cart logic
+    // Contact form logic
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for contacting Aura Perfume! We will get back to you soon.');
+      document.getElementById('contactForm').reset();
+    });
+    var cart = [];
+    function updateCart() {
+      var cartItems = document.getElementById('cartItems');
+      var cartTotal = document.getElementById('cartTotal');
+      cartItems.innerHTML = '';
+      var total = 0;
+      cart.forEach(function(item, idx) {
+        var li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+        li.innerHTML = item.name + ' <span class="badge bg-primary">$' + item.price + '</span>';
+        cartItems.appendChild(li);
+        total += parseFloat(item.price);
+      });
+      cartTotal.textContent = total.toFixed(2);
+      document.getElementById('cartCount').textContent = cart.length;
+    }
+    document.querySelectorAll('.add-to-cart').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var name = btn.getAttribute('data-name');
+        var price = btn.getAttribute('data-price');
+        cart.push({name: name, price: price});
+        updateCart();
+      });
+    });
+    document.getElementById('cartModal').addEventListener('show.bs.modal', updateCart);
+  </script>
+</body>
+</html>
