@@ -12,6 +12,25 @@
     body {
       background: #f8f9fa;
     }
+    @media (max-width: 767px) {
+      .hero {
+        min-height: 260px;
+        font-size: 1.1rem;
+        padding: 32px 0;
+      }
+      .product-card img {
+        height: 140px;
+      }
+      .display-4 {
+        font-size: 2rem;
+      }
+      .navbar-brand {
+        font-size: 1.3rem;
+      }
+      .footer {
+        padding: 18px 0;
+      }
+    }
     .hero {
       background: url('https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
       color: #fff;
@@ -20,10 +39,37 @@
       align-items: center;
       justify-content: center;
       text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      opacity: 0;
+      animation: fadeInHero 1.2s ease-out 0.2s forwards;
+      position: relative;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(120deg, rgba(226,194,117,0.35) 0%, rgba(33,37,41,0.15) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .hero > div {
+      position: relative;
+      z-index: 2;
+    }
+    @keyframes fadeInHero {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: none; }
     }
     .product-card img {
       height: 200px;
       object-fit: cover;
+    }
+    .product-card {
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .product-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(226,194,117,0.18);
+      transform: translateY(-8px) scale(1.03);
+      z-index: 2;
     }
     .navbar-brand {
       font-family: 'Playfair Display', serif;
@@ -42,6 +88,9 @@
       color: #fff;
       padding: 30px 0;
       text-align: center;
+    }
+    .progress-bar {
+      transition: width 1.2s cubic-bezier(.4,2,.3,1);
     }
   </style>
 </head>
@@ -70,39 +119,149 @@
       <h1 class="display-4 fw-bold">Discover Your Signature Scent</h1>
       <p class="lead mb-4">Luxury perfumes crafted for every moment. Elevate your presence with Hrishi Perfume.</p>
       <a href="#" class="btn btn-light btn-lg shadow">Shop Now</a>
+      <button type="button" class="btn btn-warning btn-lg ms-2 shadow" data-bs-toggle="modal" data-bs-target="#scentQuizModal">Find Your Scent</button>
     </div>
   </section>
 
+  <!-- Find Your Scent Quiz Modal -->
+  <div class="modal fade" id="scentQuizModal" tabindex="-1" aria-labelledby="scentQuizModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-warning">
+          <h5 class="modal-title" id="scentQuizModalLabel">Find Your Signature Scent</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="scentQuizForm">
+            <div class="mb-3">
+              <label class="form-label">What mood are you seeking?</label>
+              <select class="form-select" name="mood">
+                <option value="fresh">Fresh & Energetic</option>
+                <option value="romantic">Romantic & Floral</option>
+                <option value="bold">Bold & Spicy</option>
+                <option value="warm">Warm & Comforting</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Preferred season?</label>
+              <select class="form-select" name="season">
+                <option value="summer">Summer</option>
+                <option value="winter">Winter</option>
+                <option value="spring">Spring</option>
+                <option value="autumn">Autumn</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Occasion?</label>
+              <select class="form-select" name="occasion">
+                <option value="daily">Daily Wear</option>
+                <option value="party">Party</option>
+                <option value="work">Work</option>
+                <option value="date">Date Night</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-dark w-100">Show My Scent</button>
+          </form>
+          <div id="scentQuizResult" class="mt-4" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Limited-Time Offer Banner -->
+  <div class="alert alert-warning text-center mb-0 py-2" role="alert" style="border-radius:0; font-size:1.1rem; font-weight:500; letter-spacing:1px;">
+    <span class="me-2" aria-label="Limited Time Offer" role="img">⏳</span>
+    <strong>Limited-Time Offer:</strong> Get 20% off all perfumes! Use code <span class="badge bg-dark text-warning">AURA20</span> at checkout. Ends soon!
+  </div>
   <!-- Featured Products -->
   <section class="container py-5">
     <h2 class="text-center mb-4">Featured Perfumes</h2>
     <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card product-card shadow-sm">
+      <div class="col-12 col-md-4">
+        <div class="card product-card shadow-sm position-relative h-100">
+          <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Best Seller</span>
           <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Perfume 1">
           <div class="card-body">
             <h5 class="card-title">Eternal Blossom</h5>
             <p class="card-text">A floral fragrance with notes of jasmine and rose, perfect for day and night.</p>
+            <div class="mb-2">
+              <span class="text-warning" aria-label="4 stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+              <small class="text-muted">(4.0)</small>
+            </div>
+            <!-- Scent Note Progress Bars -->
+            <div class="mb-3">
+              <div class="mb-1 small">Jasmine <span class="float-end">80%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Rose <span class="float-end">60%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-danger" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Citrus <span class="float-end">40%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
             <a href="#" class="btn btn-outline-dark">View Details</a>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card product-card shadow-sm">
+      <div class="col-12 col-md-4">
+        <div class="card product-card shadow-sm position-relative h-100">
+          <span class="badge bg-success position-absolute top-0 start-0 m-2">New</span>
           <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Perfume 2">
           <div class="card-body">
             <h5 class="card-title">Mystic Oud</h5>
             <p class="card-text">A rich, woody scent with hints of spice, designed for a lasting impression.</p>
+            <div class="mb-2">
+              <span class="text-warning" aria-label="5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              <small class="text-muted">(5.0)</small>
+            </div>
+            <!-- Scent Note Progress Bars -->
+            <div class="mb-3">
+              <div class="mb-1 small">Oud <span class="float-end">90%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-dark" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Spice <span class="float-end">70%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Amber <span class="float-end">50%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-secondary" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
             <a href="#" class="btn btn-outline-dark">View Details</a>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card product-card shadow-sm">
+      <div class="col-12 col-md-4">
+        <div class="card product-card shadow-sm h-100 position-relative">
+          <span class="badge bg-info text-dark position-absolute top-0 start-0 m-2">Popular</span>
           <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Perfume 3">
           <div class="card-body">
             <h5 class="card-title">Citrus Dream</h5>
-            <p class="card-text">A refreshing blend of citrus and vanilla, perfect for summer days.</p>
+            <p class="card-text">A refreshing blend of citrus and vanilla, perfect for summer days.<br><br></p>
+            <div class="mb-2">
+              <span class="text-warning" aria-label="3 stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+              <small class="text-muted">(3.0)</small>
+            </div>
+            <!-- Scent Note Progress Bars -->
+            <div class="mb-3">
+              <div class="mb-1 small">Citrus <span class="float-end">85%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Vanilla <span class="float-end">60%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mb-1 small">Musk <span class="float-end">30%</span></div>
+              <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-secondary" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
             <a href="#" class="btn btn-outline-dark">View Details</a>
           </div>
         </div>
@@ -110,6 +269,79 @@
     </div>
   </section>
 
+  <!-- Animated Counters Section -->
+  <section class="container py-5">
+    <div class="row text-center">
+      <div class="col-6 col-md-3 mb-4 mb-md-0">
+        <div class="counter" data-target="5000" tabindex="0" aria-label="Happy Customers">
+          <span class="display-6 fw-bold text-warning" id="counterCustomers">0</span>
+          <div class="small mt-2">Happy Customers</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 mb-4 mb-md-0">
+        <div class="counter" data-target="1200" tabindex="0" aria-label="Orders Delivered">
+          <span class="display-6 fw-bold text-warning" id="counterOrders">0</span>
+          <div class="small mt-2">Orders Delivered</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="counter" data-target="350" tabindex="0" aria-label="5-Star Reviews">
+          <span class="display-6 fw-bold text-warning" id="counterReviews">0</span>
+          <div class="small mt-2">5-Star Reviews</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="counter" data-target="25" tabindex="0" aria-label="Unique Scents">
+          <span class="display-6 fw-bold text-warning" id="counterScents">0</span>
+          <div class="small mt-2">Unique Scents</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Carousel -->
+  <section class="container py-5">
+    <h2 class="text-center mb-4">What Our Customers Say</h2>
+    <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="d-flex flex-column align-items-center">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle mb-3" width="80" height="80" alt="Customer 1">
+            <blockquote class="blockquote text-center">
+              <p class="mb-1">“Eternal Blossom is my go-to fragrance. Elegant and long-lasting!”</p>
+              <footer class="blockquote-footer">Priya S.</footer>
+            </blockquote>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="d-flex flex-column align-items-center">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle mb-3" width="80" height="80" alt="Customer 2">
+            <blockquote class="blockquote text-center">
+              <p class="mb-1">“Mystic Oud gets me compliments everywhere I go!”</p>
+              <footer class="blockquote-footer">Rahul K.</footer>
+            </blockquote>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="d-flex flex-column align-items-center">
+            <img src="https://randomuser.me/api/portraits/women/65.jpg" class="rounded-circle mb-3" width="80" height="80" alt="Customer 3">
+            <blockquote class="blockquote text-center">
+              <p class="mb-1">“Citrus Dream is perfect for summer. So fresh!”</p>
+              <footer class="blockquote-footer">Sneha T.</footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </section>
   <!-- About Section -->
   <section class="container py-5">
     <div class="row align-items-center">
@@ -124,18 +356,161 @@
     </div>
   </section>
 
+  <!-- FAQ Section -->
+  <section class="container py-5">
+    <h2 class="text-center mb-4">Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faqOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            What ingredients are used in Aura Perfume?
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="faqOne" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            We use only the finest natural and safe synthetic ingredients, sourced globally for quality and sustainability.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faqTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            How long does the fragrance last?
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="faqTwo" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            Our perfumes are designed to last 6-10 hours, depending on skin type and environment.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faqThree">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Do you offer samples or testers?
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="faqThree" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            Yes, we offer sample packs so you can try before you buy. Check our Shop page for details.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   <!-- Footer -->
   <footer class="footer mt-5">
     <div class="container">
       <p class="mb-1">&copy; 2025 Aura Perfume. All rights reserved.</p>
-      <small>Follow us on 
-        <a href="#" class="text-light text-decoration-underline">Instagram</a> | 
-        <a href="#" class="text-light text-decoration-underline">Facebook</a>
-      </small>
+      <form class="row justify-content-center mb-3">
+        <div class="col-auto">
+          <label for="newsletterEmail" class="visually-hidden">Email address</label>
+          <input type="email" class="form-control" id="newsletterEmail" placeholder="Subscribe to our newsletter">
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-warning mb-3">Subscribe</button>
+        </div>
+      </form>
+      <div class="mb-2">
+        <span>Follow us on </span>
+        <a href="#" class="btn btn-outline-light btn-sm rounded-circle mx-1" title="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
+            <path d="M8 3c1.657 0 1.85.006 2.504.036.653.03 1.09.14 1.343.23.29.1.497.22.717.44.22.22.34.427.44.717.09.253.2.69.23 1.343C12.994 6.15 13 6.343 13 8c0 1.657-.006 1.85-.036 2.504-.03.653-.14 1.09-.23 1.343-.1.29-.22.497-.44.717-.22.22-.427.34-.717.44-.253.09-.69.2-1.343.23C9.85 12.994 9.657 13 8 13c-1.657 0-1.85-.006-2.504-.036-.653-.03-1.09-.14-1.343-.23-.29-.1-.497-.22-.717-.44-.22-.22-.34-.427-.44-.717-.09-.253-.2-.69-.23-1.343C3.006 9.85 3 9.657 3 8c0-1.657.006-1.85.036-2.504.03-.653.14-1.09.23-1.343.1-.29.22-.497.44-.717.22-.22.427-.34.717-.44.253-.09.69-.2 1.343-.23C6.15 3.006 6.343 3 8 3zm0-1C6.326 2 6.107 2.007 5.447 2.037c-.667.03-1.13.14-1.52.29-.41.155-.76.36-1.11.71-.35.35-.555.7-.71 1.11-.15.39-.26.853-.29 1.52C2.007 6.107 2 6.326 2 8c0 1.674.007 1.893.037 2.553.03.667.14 1.13.29 1.52.155.41.36.76.71 1.11.35.35.7.555 1.11.71.39.15.853.26 1.52.29.66.03.879.037 2.553.037 1.674 0 1.893-.007 2.553-.037.667-.03 1.13-.14 1.52-.29.41-.155.76-.36 1.11-.71.35-.35.555-.7.71-1.11.15-.39.26-.853.29-1.52.03-.66.037-.879.037-2.553 0-1.674-.007-1.893-.037-2.553-.03-.667-.14-1.13-.29-1.52-.155-.41-.36-.76-.71-1.11-.35-.35-.7-.555-1.11-.71-.39-.15-.853-.26-1.52-.29C9.893 2.007 9.674 2 8 2z"/>
+            <path d="M8 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0 5a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
+            <circle cx="12.5" cy="3.5" r="1"/>
+          </svg>
+        </a>
+        <a href="#" class="btn btn-outline-light btn-sm rounded-circle mx-1" title="Facebook">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
+            <path d="M8.94 8.5H10V12h2V8.5h1.5V7H12V6c0-.542.458-1 1-1h1V3h-1c-1.654 0-3 1.346-3 3v1H8v1.5h.94z"/>
+          </svg>
+        </a>
+      </div>
     </div>
   </footer>
 
+  <!-- Back to Top Button -->
+  <button type="button" id="backToTopBtn" class="btn btn-warning rounded-circle shadow position-fixed" style="bottom: 32px; right: 32px; display:none; z-index:1050; width:48px; height:48px;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V4.707l3.147 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 4.707V11.5A.5.5 0 0 0 8 12z"/>
+    </svg>
+  </button>
   <!-- Bootstrap JS Bundle (includes Popper) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('scentQuizForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var mood = this.mood.value;
+      var season = this.season.value;
+      var occasion = this.occasion.value;
+      var result = '';
+      if (mood === 'fresh' && season === 'summer') {
+        result = '<strong>Citrus Dream</strong> is perfect for a fresh, energetic summer vibe!';
+      } else if (mood === 'romantic' && occasion === 'date') {
+        result = '<strong>Eternal Blossom</strong> is ideal for romantic date nights.';
+      } else if (mood === 'bold' && occasion === 'party') {
+        result = '<strong>Mystic Oud</strong> will make a bold statement at any party.';
+      } else if (mood === 'warm' && season === 'winter') {
+        result = '<strong>Mystic Oud</strong> offers a warm, comforting scent for winter.';
+      } else {
+        result = 'Try <strong>Eternal Blossom</strong> for a versatile, elegant fragrance.';
+      }
+      var resultDiv = document.getElementById('scentQuizResult');
+      resultDiv.innerHTML = '<div class="alert alert-success">' + result + '</div>';
+      resultDiv.style.display = 'block';
+    });
+
+    // Perfume filter bar functionality
+    document.querySelectorAll('[data-filter]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('[data-filter]').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        var filter = btn.getAttribute('data-filter');
+        document.querySelectorAll('.perfume-card').forEach(function(card) {
+          if (filter === 'all' || card.getAttribute('data-type') === filter) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Back to Top Button functionality
+    var backToTopBtn = document.getElementById('backToTopBtn');
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 300) {
+        backToTopBtn.style.display = 'block';
+      } else {
+        backToTopBtn.style.display = 'none';
+      }
+    });
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Animated Counters
+    function animateCounter(id, target, duration = 1800) {
+      const el = document.getElementById(id);
+      let start = 0;
+      const increment = target / (duration / 16);
+      function update() {
+        start += increment;
+        if (start < target) {
+          el.textContent = Math.floor(start);
+          requestAnimationFrame(update);
+        } else {
+          el.textContent = target;
+        }
+      }
+      update();
+    }
+    window.addEventListener('DOMContentLoaded', function() {
+      animateCounter('counterCustomers', 5000);
+      animateCounter('counterOrders', 1200);
+      animateCounter('counterReviews', 350);
+      animateCounter('counterScents', 25);
+    });
+  </script>
 </body>
 </html>
