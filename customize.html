@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Customize Your Perfume - Aura Perfume</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(120deg, #f8f5e6 0%, #e2c275 100%);
+      min-height: 100vh;
+    }
+    .navbar-brand {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      letter-spacing: 2px;
+      font-size: 2rem;
+      color: #e2c275 !important;
+    }
+    .navbar-brand:hover { color: #c9a34e !important; }
+    .customize-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(191,161,74,0.10);
+      padding: 2.5rem 2rem;
+      max-width: 600px;
+      margin: 2rem auto;
+    }
+    .custom-preview {
+      background: #fffbe6;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      box-shadow: 0 2px 8px rgba(191,161,74,0.08);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-0">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Aura Perfume</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="shop.html">Shop</a></li>
+          <li class="nav-item"><a class="nav-link active" href="customize.html">Customize</a></li>
+          <li class="nav-item"><a class="nav-link" href="cart.html">Cart</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Customize Perfume Section -->
+  <section class="customize-card">
+    <h2 class="text-center mb-4" style="font-family:'Playfair Display',serif;">Customize Your Perfume</h2>
+    <form id="customPerfumeForm" class="row g-4 justify-content-center">
+      <div class="col-md-4">
+        <label class="form-label fw-bold">Top Note</label>
+        <select class="form-select" name="topNote" required>
+          <option value="">Choose...</option>
+          <option value="Citrus">Citrus</option>
+          <option value="Bergamot">Bergamot</option>
+          <option value="Lavender">Lavender</option>
+          <option value="Apple">Apple</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-bold">Heart Note</label>
+        <select class="form-select" name="heartNote" required>
+          <option value="">Choose...</option>
+          <option value="Rose">Rose</option>
+          <option value="Jasmine">Jasmine</option>
+          <option value="Spice">Spice</option>
+          <option value="Peach">Peach</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-bold">Base Note</label>
+        <select class="form-select" name="baseNote" required>
+          <option value="">Choose...</option>
+          <option value="Musk">Musk</option>
+          <option value="Oud">Oud</option>
+          <option value="Vanilla">Vanilla</option>
+          <option value="Amber">Amber</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-bold">Name Your Creation</label>
+        <input type="text" class="form-control" name="blendName" maxlength="32" placeholder="e.g. Summer Dream" required>
+      </div>
+      <div class="col-12 text-center">
+        <button type="submit" class="btn btn-warning btn-lg">Add Custom Perfume to Cart</button>
+      </div>
+    </form>
+    <div id="customPerfumePreview" class="custom-preview text-center" style="display:none;"></div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('customPerfumeForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const top = this.topNote.value;
+      const heart = this.heartNote.value;
+      const base = this.baseNote.value;
+      const name = this.blendName.value.trim() || 'My Custom Perfume';
+      // Show preview
+      document.getElementById('customPerfumePreview').innerHTML =
+        `<div class="alert alert-success">
+          <strong>${name}</strong><br>
+          <span>Top: ${top}, Heart: ${heart}, Base: ${base}</span><br>
+          <em>Added to cart as a custom blend!</em>
+        </div>`;
+      document.getElementById('customPerfumePreview').style.display = 'block';
+      // Add to cart (localStorage)
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.push({
+        name: name + " (Custom Blend)",
+        price: 99, // You can set a custom price
+        quantity: 1,
+        img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80",
+        notes: { top, heart, base }
+      });
+      localStorage.setItem('cart', JSON.stringify(cart));
+    });
+  </script>
+</body>
+</html>
