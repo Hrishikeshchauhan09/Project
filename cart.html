@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Cart - Aura Perfume</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    body {
+      background: linear-gradient(120deg, #f8f5e6 0%, #e2c275 100%);
+      min-height: 100vh;
+    }
+    .navbar-brand { font-family: 'Playfair Display', serif; font-weight: 700; letter-spacing: 2px; font-size: 2rem; color: #e2c275 !important; }
+    .navbar-brand:hover { color: #c9a34e !important; }
+    .cart-table img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
+    .cart-summary { background: #fffbe6; border-radius: 8px; padding: 24px; box-shadow: 0 2px 8px rgba(191,161,74,0.08);}
+    .step-indicator { font-size: 1.1rem; }
+    .step-indicator .active { color: #e2c275; font-weight: bold; }
+    @media (max-width: 767px) {
+      .navbar-brand { font-size: 1.3rem; }
+      .cart-table img { width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-0">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Aura Perfume</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="shop.html">Shop</a></li>
+          <li class="nav-item"><a class="nav-link" href="#aboutModal" data-bs-toggle="modal">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contactModal" data-bs-toggle="modal">Contact</a></li>
+          <li class="nav-item">
+            <a class="nav-link position-relative" href="cart.html" aria-label="View Cart">
+              <i class="bi bi-cart3" style="font-size:1.3rem;"></i>
+              <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Step Indicator -->
+  <div class="container mt-4 mb-3">
+    <div class="step-indicator text-center">
+      <span class="active">1. Cart</span> &rarr; 
+      <span>2. Shipping</span> &rarr; 
+      <span>3. Payment</span> &rarr; 
+      <span>4. Review</span>
+    </div>
+  </div>
+
+  <!-- Cart Table -->
+  <section class="container mb-5">
+    <h2 class="mb-4 text-center" style="font-family:'Playfair Display',serif;">Your Shopping Cart</h2>
+    <div class="table-responsive">
+      <table class="table cart-table align-middle">
+        <thead class="table-warning">
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Perfume</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Subtotal</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody id="cartTableBody">
+          <!-- Cart items will be injected here -->
+        </tbody>
+      </table>
+    </div>
+    <div class="row justify-content-end">
+      <div class="col-md-5">
+        <div class="cart-summary mt-3">
+          <h5 class="mb-3">Order Summary</h5>
+          <div class="d-flex justify-content-between">
+            <span>Subtotal</span>
+            <span>$<span id="cartSubtotal">0.00</span></span>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span>Shipping</span>
+            <span>$<span id="cartShipping">0.00</span></span>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between fw-bold">
+            <span>Total</span>
+            <span>$<span id="cartTotal">0.00</span></span>
+          </div>
+          <button class="btn btn-warning w-100 mt-4" id="proceedCheckout">Proceed to Checkout</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Modal -->
+  <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-warning">
+          <h5 class="modal-title" id="aboutLabel">About Aura Perfume</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h4 class="fw-bold" style="color:#e2c275;">Our Story</h4>
+          <p>Aura Perfume was founded with a passion for luxury and elegance. Our mission is to craft unforgettable scents that evoke emotion and sophistication. Each fragrance is meticulously blended using the finest ingredients, ensuring a unique and lasting impression.</p>
+          <h5 class="mt-4">Why Choose Aura?</h5>
+          <ul>
+            <li>Exquisite, long-lasting perfumes</li>
+            <li>Ethically sourced ingredients</li>
+            <li>Luxury packaging and presentation</li>
+            <li>Exceptional customer service</li>
+          </ul>
+          <div class="mt-3">
+            <span class="badge bg-warning text-dark me-2">Luxury</span>
+            <span class="badge bg-success me-2">Satisfaction Guaranteed</span>
+            <span class="badge bg-info text-dark">Free Shipping</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Modal -->
+  <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-info">
+          <h5 class="modal-title" id="contactLabel">Contact Aura Perfume</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="contactForm">
+            <div class="mb-3">
+              <label for="contactName" class="form-label">Name</label>
+              <input type="text" class="form-control" id="contactName" required>
+            </div>
+            <div class="mb-3">
+              <label for="contactEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="contactEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="contactMessage" class="form-label">Message</label>
+              <textarea class="form-control" id="contactMessage" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-warning w-100">Send Message</button>
+          </form>
+          <hr>
+          <div class="small">
+            <strong>Email:</strong> support@auraperfume.com<br>
+            <strong>Phone:</strong> +1 (800) 555-1234<br>
+            <strong>Address:</strong> 123 Luxury Ave, Scent City, USA
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer mt-5">
+    <div class="container text-center">
+      <p class="mb-1">&copy; 2025 Aura Perfume. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Example product data for demo (replace with localStorage or backend in production)
+    // Each item: {name, price, quantity, img}
+    let cart = JSON.parse(localStorage.getItem('cart')) || [
+      {
+        name: "Eternal Blossom",
+        price: 79,
+        quantity: 1,
+        img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        name: "Mystic Oud",
+        price: 129,
+        quantity: 2,
+        img: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"
+      }
+    ];
+
+    function saveCart() {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    function renderCart() {
+      const tbody = document.getElementById('cartTableBody');
+      tbody.innerHTML = '';
+      let subtotal = 0;
+      cart.forEach((item, idx) => {
+        const itemSubtotal = item.price * item.quantity;
+        subtotal += itemSubtotal;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><img src="${item.img}" alt="${item.name}"></td>
+          <td>${item.name}</td>
+          <td>$${item.price}</td>
+          <td>
+            <div class="input-group input-group-sm" style="max-width:120px;">
+              <button class="btn btn-outline-secondary btn-sm" type="button" onclick="updateQty(${idx}, -1)" aria-label="Decrease quantity"><i class="bi bi-dash"></i></button>
+              <input type="number" class="form-control text-center" value="${item.quantity}" min="1" onchange="setQty(${idx}, this.value)">
+              <button class="btn btn-outline-secondary btn-sm" type="button" onclick="updateQty(${idx}, 1)" aria-label="Increase quantity"><i class="bi bi-plus"></i></button>
+            </div>
+          </td>
+          <td>$${itemSubtotal.toFixed(2)}</td>
+          <td>
+            <button class="btn btn-outline-danger btn-sm" onclick="removeItem(${idx})" aria-label="Remove"><i class="bi bi-trash"></i></button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById('cartSubtotal').textContent = subtotal.toFixed(2);
+      // Shipping: free over $100, else $8
+      let shipping = subtotal > 100 || subtotal === 0 ? 0 : 8;
+      document.getElementById('cartShipping').textContent = shipping.toFixed(2);
+      document.getElementById('cartTotal').textContent = (subtotal + shipping).toFixed(2);
+    }
+
+    function updateQty(idx, delta) {
+      cart[idx].quantity = Math.max(1, cart[idx].quantity + delta);
+      saveCart();
+      renderCart();
+    }
+    function setQty(idx, val) {
+      cart[idx].quantity = Math.max(1, parseInt(val) || 1);
+      saveCart();
+      renderCart();
+    }
+    function removeItem(idx) {
+      cart.splice(idx, 1);
+      saveCart();
+      renderCart();
+    }
+
+    document.getElementById('proceedCheckout').addEventListener('click', function() {
+      alert('Proceeding to checkout (next steps not implemented in this demo).');
+      // Redirect or show next checkout step here
+    });
+
+    // Contact form logic
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for contacting Aura Perfume! We will get back to you soon.');
+      document.getElementById('contactForm').reset();
+    });
+
+    renderCart();
+  </script>
+</body>
+</html>
