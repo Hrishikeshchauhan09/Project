@@ -213,20 +213,6 @@
               <h5 class="card-title">Citrus Dream</h5>
               <button class="btn btn-light btn-sm wishlist-btn" data-name="Citrus Dream" aria-label="Add to Wishlist"><i class="bi bi-heart"></i></button>
             </div>
-  <!-- Wishlist Modal -->
-  <div class="modal fade" id="wishlistModal" tabindex="-1" aria-labelledby="wishlistLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="wishlistLabel">Your Wishlist</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <ul class="list-group mb-3" id="wishlistItems"></ul>
-        </div>
-      </div>
-    </div>
-  </div>
             <p class="card-text">A refreshing blend of citrus and vanilla.</p>
             <div class="mb-2">
               <span class="text-warning">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
@@ -671,6 +657,9 @@
             <button type="submit" class="btn btn-primary w-100">Submit Review</button>
           </form>
         </div>
+      </div>
+    </div>
+  </div>
   <!-- Cart Modal -->
   <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -686,9 +675,6 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-success">Checkout</button>
         </div>
-      </div>
-    </div>
-  </div>
       </div>
     </div>
   </div>
@@ -911,7 +897,8 @@
       cart.forEach(function(item, idx) {
         var li = document.createElement('li');
         li.className = 'list-group-item d-flex justify-content-between align-items-center';
-        li.innerHTML = item.name + ' <span class="badge bg-primary">$' + item.price + '</span>';
+        li.innerHTML = item.name + ' <span class="badge bg-primary">$' + item.price + '</span>' +
+          '<button class="btn btn-sm btn-danger remove-from-cart" data-idx="' + idx + '">&times;</button>';
         cartItems.appendChild(li);
         total += parseFloat(item.price);
       });
@@ -927,6 +914,13 @@
       });
     });
     document.getElementById('cartModal').addEventListener('show.bs.modal', updateCart);
+    document.getElementById('cartItems').addEventListener('click', function(e) {
+      if (e.target.classList.contains('remove-from-cart')) {
+        var idx = e.target.getAttribute('data-idx');
+        cart.splice(idx, 1);
+        updateCart();
+      }
+    });
   </script>
 </body>
 </html>
