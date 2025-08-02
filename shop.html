@@ -1363,6 +1363,103 @@
       alert('Thank you for contacting Aura Perfume! We will get back to you soon.');
       document.getElementById('contactForm').reset();
     });
+
+    // --- Filter and Sort functionality ---
+    const filterType = document.getElementById('filterType');
+    const filterPrice = document.getElementById('filterPrice');
+    const sortBy = document.getElementById('sortBy');
+    const searchInput = document.getElementById('searchInput');
+    const productGrid = document.getElementById('productGrid');
+
+    function filterAndSortProducts() {
+      const typeFilter = filterType.value;
+      const priceFilter = filterPrice.value;
+      const sortValue = sortBy.value;
+      const searchTerm = searchInput.value.toLowerCase();
+
+      const products = Array.from(productGrid.children);
+      
+      products.forEach(product => {
+        const card = product.querySelector('.product-card');
+        const productType = card.getAttribute('data-type');
+        const productPrice = card.getAttribute('data-price');
+        const productName = card.getAttribute('data-name').toLowerCase();
+        const productRating = parseInt(card.getAttribute('data-rating'));
+        const productPopularity = parseInt(card.getAttribute('data-popularity'));
+        
+        // Get price value for sorting
+        const priceElement = card.querySelector('.fw-bold');
+        const priceValue = parseFloat(priceElement.textContent.replace('$', ''));
+
+        // Apply filters
+        let showProduct = true;
+
+        // Type filter
+        if (typeFilter !== 'all' && productType !== typeFilter) {
+          showProduct = false;
+        }
+
+        // Price filter
+        if (priceFilter !== 'all') {
+          if (priceFilter === 'low' && priceValue >= 50) {
+            showProduct = false;
+          } else if (priceFilter === 'mid' && (priceValue < 50 || priceValue > 100)) {
+            showProduct = false;
+          } else if (priceFilter === 'high' && priceValue <= 100) {
+            showProduct = false;
+          }
+        }
+
+        // Search filter
+        if (searchTerm && !productName.includes(searchTerm)) {
+          showProduct = false;
+        }
+
+        // Show/hide product
+        product.style.display = showProduct ? 'block' : 'none';
+      });
+
+      // Sort products
+      const visibleProducts = products.filter(product => 
+        product.style.display !== 'none'
+      );
+
+      if (sortValue !== 'default') {
+        visibleProducts.sort((a, b) => {
+          const cardA = a.querySelector('.product-card');
+          const cardB = b.querySelector('.product-card');
+          
+          if (sortValue === 'price') {
+            const priceA = parseFloat(cardA.querySelector('.fw-bold').textContent.replace('$', ''));
+            const priceB = parseFloat(cardB.querySelector('.fw-bold').textContent.replace('$', ''));
+            return priceA - priceB;
+          } else if (sortValue === 'rating') {
+            const ratingA = parseInt(cardA.getAttribute('data-rating'));
+            const ratingB = parseInt(cardB.getAttribute('data-rating'));
+            return ratingB - ratingA; // Higher rating first
+          } else if (sortValue === 'popularity') {
+            const popularityA = parseInt(cardA.getAttribute('data-popularity'));
+            const popularityB = parseInt(cardB.getAttribute('data-popularity'));
+            return popularityB - popularityA; // Higher popularity first
+          }
+          return 0;
+        });
+
+        // Reorder products in the grid
+        visibleProducts.forEach(product => {
+          productGrid.appendChild(product);
+        });
+      }
+    }
+
+    // Add event listeners for filter controls
+    filterType.addEventListener('change', filterAndSortProducts);
+    filterPrice.addEventListener('change', filterAndSortProducts);
+    sortBy.addEventListener('change', filterAndSortProducts);
+    searchInput.addEventListener('input', filterAndSortProducts);
+
+    // Initialize filters
+    filterAndSortProducts();
   </script>
 </body>
 </html>
